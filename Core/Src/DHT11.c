@@ -5,18 +5,28 @@
  *      Author: RASBI
  */
 
+/**
+ * @brief Reads temperature and humidity from DHT11 sensor.
+ * @param dht11: pointer to DHT11_t structure
+ * @param temp_i: pointer to integer part of temperature
+ * @param temp_d: pointer to decimal part of temperature
+ * @param humidity_i: pointer to integer part of humidity
+ * @param humidity_d: pointer to decimal part of humidity
+ * @retval status code
+ *     0: OK
+ *     1: No LOW response from sensor
+ *     2: No HIGH after LOW
+ *     3: No LOW after HIGH
+ *     4: Data bit start LOW timeout
+ *     5: Data bit HIGH too long
+ *     6: Checksum error
+ */
 
 #include "dht11.h"
-#define COUNTER_MAX 65535
 
 //simple delay_us
 void delay_us(DHT11_t* dht11, uint16_t time) {
 	__HAL_TIM_SET_COUNTER(dht11->htim,0);
-
-	if (time >= COUNTER_MAX) {
-		time = COUNTER_MAX - 1;
-	}
-
 	while ((uint16_t)__HAL_TIM_GET_COUNTER(dht11->htim) < time);
 }
 
@@ -46,7 +56,7 @@ void init_DHT11(DHT11_t* dht11) { //User-defined structure values are used for i
 	HAL_TIM_Base_Start(dht11->htim);
 }
 
-uint8_t read_DHT11(DHT11_t* dht11, uint8_t* temp_i, uint8_t* temp_d, uint8_t* humidity_i, uint8_t* humidity_d, ) {
+uint8_t read_DHT11(DHT11_t* dht11, uint8_t* temp_i, uint8_t* temp_d, uint8_t* humidity_i, uint8_t* humidity_d) {
 
 	// #0 variable
 	uint8_t status = 0; //status for check dht11 response
@@ -126,10 +136,10 @@ uint8_t read_DHT11(DHT11_t* dht11, uint8_t* temp_i, uint8_t* temp_d, uint8_t* hu
 	}
 
 	// #4 return data
-	*temp_i = data[0];
-	*temp_d = data[1];
-	*humidity_i = data[2];
-	*humidity_d = data[3];
+	*humidity_i = data[0];
+	*humidity_d = data[1];
+	*temp_i = data[2];
+	*temp_d = data[3];
 
 	ERROR_HANDLE:
 	__enable_irq();
