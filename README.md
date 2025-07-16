@@ -1,0 +1,2 @@
+# STM32DHT11
+DHT11 sensor library for STM32CUBE IDE
