@@ -22,6 +22,6 @@ typedef struct {
 
 void set_pin_mode(DHT11_t* dht11, uint8_t pinmode);
 void init_DHT11(DHT11_t* dht11); //User-defined structure values are used for initialization.
-uint8_t read_DHT11(DHT11_t* dht11, uint8_t* temp_i, uint8_t* temp_d, uint8_t* humidity_i, uint8_t* humidity_d, );
+uint8_t read_DHT11(DHT11_t* dht11, uint8_t* temp_i, uint8_t* temp_d, uint8_t* humidity_i, uint8_t* humidity_d);
 
 #endif /* SRC_DHT11_H_ */
