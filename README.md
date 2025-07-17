@@ -25,7 +25,7 @@ A simple and reliable DHT11 temperature and humidity sensor driver for STM32 mic
 #include "dht11.h"
 ```
 
-2. Initialize the struct:
+2. Initialize the struct. For Example:
 
 ```c
 DHT11_t dht;
