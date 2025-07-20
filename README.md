@@ -16,6 +16,7 @@ A simple and reliable DHT11 temperature and humidity sensor driver for STM32 mic
 - STM32CubeMX generated project using HAL
 - DHT11 sensor connected to a GPIO pin
 - 1 pull-up resistor (4.7kΩ–10kΩ) recommended on data line
+- One hardware timer (e.g., TIMx) configured for microsecond (µs) resolution. Ensure the timer's Prescaler and Period settings are appropriately configured so that its counter increments every 1µs.
 
 ## 🚀 Usage
 
