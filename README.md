@@ -48,6 +48,10 @@ if (status == 0) {
 } else {
     // Handle error
 }
+// (IMPORTANT / MANDATORY)
+// According to the DHT11 datasheet, a sampling period of at least 2 seconds
+// is required between reads. Failing to add this delay may cause communication errors.
+HAL_Delay(2000);
 ```
 
 ## ⚠️ Error Codes
