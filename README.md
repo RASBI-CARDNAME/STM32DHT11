@@ -1,70 +1,70 @@
 # STM32 DHT11 Driver (C)
 
-A simple and reliable DHT11 temperature and humidity sensor driver for STM32 microcontrollers using HAL and hardware timer-based microsecond delay.
+HAL 및 하드웨어 타이머를 기반으로, 마이크로초 지연을 사용하는 STM32F1 마이크로컨트롤러용 DHT11 온도 및 습도 센서 드라이버입니다.
 
-## 📦 Features
+## 📦 특징
 
-- Written in C using STM32 HAL libraries
-- Uses hardware timer (TIMx) for accurate microsecond delays
-- Fully non-blocking except for reading period
-- Detects and returns detailed error codes
-- Lightweight and portable (no external dependencies)
+- STM32 HAL 라이브러리를 사용한 C 언어로 작성됨
+- 정확한 마이크로초 단위 지연을 위해 하드웨어 타이머(TIMx) 사용
+- 읽기 기간을 제외한 모든 작업을 non-blocking으로 구현
+- 상세한 오류 코드 감지 및 반환
+- 경량화 및 이식성 우수(외부 의존성 없음)
 
-## 🔧 Requirements
+## 🔧 요구 사항
 
-- STM32 MCU (tested on STM32F1 series)
-- STM32CubeMX generated project using HAL
-- DHT11 sensor connected to a GPIO pin
-- 1 pull-up resistor (4.7kΩ–10kΩ) recommended on data line
-- One hardware timer (e.g., TIMx) configured for microsecond (µs) resolution. Ensure the timer's Prescaler and Period settings are appropriately configured so that its counter increments every 1µs.
+- STM32 MCU (STM32F1 시리즈에서 테스트됨)
+- STM32CUBEIDE / STM32CUBEMX
+- GPIO 핀에 연결된 DHT11 센서
+- 데이터 라인에 권장되는 풀업 저항 1개 (4.7kΩ–10kΩ)
+- 마이크로초(µs) 분해능으로 설정된 하드웨어 타이머 1개 (예: TIMx). 타이머의 프리스케일러 및 주기 설정이 카운터가 1µs마다 증가하도록 설정해야 합니다.
 
-## 🚀 Usage
+🚀 사용법
 
-1. Include the files:
+1. 헤더 파일 포함:
 
 ```c
-#include "dht11.h"
+#include “dht11.h”
 ```
 
-2. Initialize the struct. For Example:
+2. 구조체 초기화. 예시:
 
 ```c
 DHT11_t dht;
 dht.GPIO_Channel = GPIOB;
 dht.pin = GPIO_PIN_3;
-dht.htim = &htim1; // Timer configured for 1µs resolution
+dht.htim = &htim1; // 1µs 해상도로 설정된 타이머
 init_DHT11(&dht);
-HAL_Delay(1500); // Wait for sensor startup
+HAL_Delay(1500); // 센서 시작 대기
 ```
 
-3. Read values:
+3. 값 읽기:
 
 ```c
 uint8_t temp_i, temp_d, hum_i, hum_d;
 uint8_t status = read_DHT11(&dht, &temp_i, &temp_d, &hum_i, &hum_d);
 
 if (status == 0) {
-    // Success
+    // 성공
 } else {
-    // Handle error
+    // 오류 처리
 }
-// (IMPORTANT / MANDATORY)
-// According to the DHT11 datasheet, a sampling period of at least 2 seconds
-// is required between reads. Failing to add this delay may cause communication errors.
+// (중요 / 필수)
+// DHT11 데이터시트에 따르면, 읽기 간 최소 2초의 샘플링 기간이 필요합니다.
+// 이 지연을 추가하지 않으면 통신 오류가 발생할 수 있습니다.
 HAL_Delay(2000);
 ```
 
-## ⚠️ Error Codes
+## ⚠️ 오류 코드
 
-| Code | Meaning                    |
+| 코드 | 의미                    |
 |------|----------------------------|
-| 1    | Sensor did not pull line LOW |
-| 2    | Sensor did not pull line HIGH |
-| 3    | Sensor stuck HIGH          |
-| 4    | Bit start LOW timeout      |
-| 5    | Bit HIGH pulse too long    |
-| 6    | Checksum mismatch          |
+| 1    | 센서가 라인을 LOW로 끌어내리지 않음 |
+| 2    | 센서가 라인을 HIGH로 끌어올리지 않음 |
+| 3    | 센서가 HIGH 상태에 고정됨          |
+| 4    | 비트 시작 LOW 타임아웃      |
+| 5    | 비트 HIGH 펄스 너무 길음    |
+| 6    | 체크섬 불일치          |
 
-## 📄 License
+## 📄 라이선스
 
-MIT License – see [`LICENSE`](LICENSE) for details.
+MIT 라이선스 – 자세한 내용은 [`LICENSE`](LICENSE)를 참조하십시오.
